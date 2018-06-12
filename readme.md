@@ -1,61 +1,27 @@
-Projeto em Laravel para gerenciar a Loja Web
+Projeto em Laravel
 
->>> Instalação  <<<
+Inclui:
 
-# instalar pacotes obrígatórios
-apt install net-tools
-apt install sudo
-apt install vim
-apt install git
-apt install php
-apt install php-dom
-apt install php-mbstring
-apt install php-mysql
-apt install curl
-apt install zip unzip
+- Login de autenticação do laravel
+- Controle de acesso (ACL)
+- Auditoria das operações
 
-# adicionar usuário na lista sudoers
-visudo (ou vim /etc/sudoers)
-User privilege specification
-user ALL=(ALL) ALL
-ctrl+x
-y
+<<< Instalação  <<<
 
-# configurar ip-fixo
-vim /etc/network/interfaces
+git clone https://github.com/hercolysm/laravel_acl.git
+cd laravel_acl
 
-# configurações para o dispositivo de rede 'enp0s3'
-auto enp0s3
-iface enp0s3 inet static
-address 192.168.1.103
-netmask 255.255.255.0
-gateway 192.168.1.1
+# criar arquivo de configurações
+cp .env.example .env
 
-# reiniciar conexão de rede
-/etc/init.d/networking restart
-
-
-# configuração do BD MySQL
-#criar usuario
-CREATE USER 'loja_admin'@'192.168.1.103' IDENTIFIED BY 'loja_admin123@';
-#dar permissões para o usuário
-GRANT SELECT,INSERT,UPDATE,DELETE,CREATE,DROP,ALTER,INDEX on loja_admin.* TO 'loja_admin'@'192.168.1.103' IDENTIFIED BY 'loja_admin123@';
-flush privileges;
-#criar BD
-create database loja_admin;
-
-cd /var/www/html
-git clone https://github.com/hercolysm/loja_admin.git
-cd loja_admin
-
-# configuração de banco mysql
+# configurar banco mysql
 vim .env
 DB_CONNECTION=mysql
 DB_HOST=192.168.1.11
 DB_PORT=3306
-DB_DATABASE=loja_admin
-DB_USERNAME=loja_admin
-DB_PASSWORD=loja_admin123@
+DB_DATABASE=nome_do_banco
+DB_USERNAME=nome_do_usuario
+DB_PASSWORD=nome_do_usuario123@
 
 # instalar composer (global)
 (buscar arquivo atualizado no link 'https://getcomposer.org/download/')
@@ -72,10 +38,22 @@ chmod 777 -R storage/framework/sessions/
 chmod 777 -R storage/framework/views/
 chmod 777 -R storage/logs/
 
-php artisan serve --host=192.168.1.103 --port=80
+php artisan serve --host=127.0.0.1 --port=80
 
+# criar BD mysql
+mysql> create database nome_do_banco;
+
+# migrar BD
 php artisan migrate:install
 php artisan migrate:status
 php artisan migrate
 
+# semear BD
 php artisan db:seed
+
+# acessar no navegador
+http://127.0.0.1
+login: admin@admin
+senha: 1234
+
+Aproveite isso! ;)
